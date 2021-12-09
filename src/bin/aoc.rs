@@ -3,7 +3,7 @@ extern crate clap;
 
 use std::{fs::File, io::BufReader};
 
-use aoc_2021::{day_01, day_02};
+use aoc_2021::{day_01, day_02, day_03};
 
 fn main() {
     let matches = clap_app!(
@@ -38,6 +38,7 @@ fn main() {
         (1, 2) => day_01::part_2(&mut buf),
         (2, 1) => day_02::part_1(&mut buf),
         (2, 2) => day_02::part_2(&mut buf),
+        (3, 1) => day_03::part_1(&mut buf),
         _ => panic!(
             "Ho! Ho! Ho! Day {} part {} hasn't been implemented yet!",
             day, part
