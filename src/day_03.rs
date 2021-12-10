@@ -4,7 +4,7 @@ pub fn part_1(input: &mut dyn BufRead) -> io::Result<i32> {
     let mut counts: Vec<i32> = vec![];
 
     let mut line = String::new();
-    let len = input.read_line(&mut line)?;
+    let _ = input.read_line(&mut line)?;
 
     line.trim().as_bytes().iter().for_each(|bit| match bit {
         0x31 => counts.push(1),  // Push positive for '1'

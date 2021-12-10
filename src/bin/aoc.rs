@@ -1,9 +1,7 @@
 #[macro_use]
 extern crate clap;
 
-use std::{fs::File, io::BufReader};
-
-use aoc_2021::{day_01, day_02, day_03, day_04};
+use aoc_2021::{day_01, day_02, day_03, day_04, day_05, get_puzzle_input};
 
 fn main() {
     let matches = clap_app!(
@@ -24,14 +22,7 @@ fn main() {
     let day = i32::from_str_radix(day, 10).unwrap();
     let part = i32::from_str_radix(part, 10).unwrap();
 
-    let file_name = if use_example {
-        format!("./inputs/day-{:0>2}-example.txt", day)
-    } else {
-        format!("./inputs/day-{:0>2}-input.txt", day)
-    };
-
-    let input = File::open(file_name).expect("Expected to open file");
-    let mut buf = BufReader::new(input);
+    let mut buf = get_puzzle_input(day, use_example);
 
     let result = match (day, part) {
         (1, 1) => day_01::part_1(&mut buf),
@@ -40,6 +31,9 @@ fn main() {
         (2, 2) => day_02::part_2(&mut buf),
         (3, 1) => day_03::part_1(&mut buf),
         (4, 1) => day_04::part_1(&mut buf),
+        (4, 2) => day_04::part_2(&mut buf),
+        (5, 1) => day_05::part_1(&mut buf),
+        (5, 2) => day_05::part_2(&mut buf),
         _ => panic!(
             "Ho! Ho! Ho! Day {} part {} hasn't been implemented yet!",
             day, part

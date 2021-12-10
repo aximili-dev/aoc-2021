@@ -82,14 +82,14 @@ impl Display for Board {
 
         for y in 0..5 {
             for x in 0..5 {
-                write!(f, "{}", numbers[y * 5 + x]);
+                write!(f, "{}", numbers[y * 5 + x])?;
 
                 if x != 4 {
-                    write!(f, " ");
+                    write!(f, " ")?;
                 }
             }
 
-            writeln!(f);
+            writeln!(f)?;
         }
 
         Ok(())
@@ -128,11 +128,8 @@ fn read_board(input: &mut dyn BufRead) -> io::Result<Board> {
     Ok(board)
 }
 
-pub fn part_1(input: &mut dyn BufRead) -> io::Result<i32> {
-    let numbers = read_numbers(input)?;
+fn read_boards(input: &mut dyn BufRead) -> io::Result<Vec<Board>> {
     let mut boards: Vec<Board> = Vec::new();
-
-    println!("Read numbers: {:?}", numbers);
 
     loop {
         let mut line = String::new();
@@ -144,10 +141,15 @@ pub fn part_1(input: &mut dyn BufRead) -> io::Result<i32> {
 
         let board = read_board(input)?;
 
-        println!("Read board:\n {}", &board);
-
         boards.push(board);
     }
+
+    Ok(boards)
+}
+
+pub fn part_1(input: &mut dyn BufRead) -> io::Result<i32> {
+    let numbers = read_numbers(input)?;
+    let mut boards = read_boards(input)?;
 
     for n in numbers.iter() {
         boards.iter_mut().for_each(|board| board.called_num(*n));
@@ -157,5 +159,30 @@ pub fn part_1(input: &mut dyn BufRead) -> io::Result<i32> {
         }
     }
 
-    Ok(0)
+    Err(io::Error::new(
+        io::ErrorKind::Other,
+        "Didn't find a winning board",
+    ))
+}
+
+pub fn part_2(input: &mut dyn BufRead) -> io::Result<i32> {
+    let numbers = read_numbers(input)?;
+    let mut boards = read_boards(input)?;
+
+    for n in numbers.iter() {
+        boards.iter_mut().for_each(|board| board.called_num(*n));
+
+        if let Some(_) = boards.iter().find(|board| board.has_won()) {
+            if boards.len() == 1 {
+                return Ok(*n * boards[0].score());
+            } else {
+                boards.retain(|board| !board.has_won());
+            }
+        }
+    }
+
+    Err(io::Error::new(
+        io::ErrorKind::Other,
+        "Didn't find a winning board",
+    ))
 }
