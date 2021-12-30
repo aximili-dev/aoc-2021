@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate clap;
 
-use aoc_2021::{day_01, day_02, day_03, day_04, day_05, get_puzzle_input};
+use aoc_2021::{day_01, day_02, day_03, day_04, day_05, day_06, day_07, get_puzzle_input};
 
 fn main() {
     let matches = clap_app!(
@@ -34,6 +34,14 @@ fn main() {
         (4, 2) => day_04::part_2(&mut buf),
         (5, 1) => day_05::part_1(&mut buf),
         (5, 2) => day_05::part_2(&mut buf),
+        (6, 1) => day_06::part_1(&mut buf),
+        (6, 2) => {
+            let result = day_06::part_2(&mut buf).unwrap();
+            println!("Day 6 part 2 result: {}", result);
+            return;
+        }
+        (7, 1) => day_07::part_1(&mut buf),
+        (7, 2) => day_07::part_2(&mut buf),
         _ => panic!(
             "Ho! Ho! Ho! Day {} part {} hasn't been implemented yet!",
             day, part
